@@ -1,8 +1,18 @@
+<template>
+  <h2>{{ players.playersTurn }}'s turn and {{ winMark }}</h2>
+  <ul class="grid-flow">
+    <li v-for="(mark, idx) in blockMarks" :key="idx" class="block" @click="markPlayer(idx)">
+      {{ mark }}
+    </li>
+  </ul>
+  <BoardItem />
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
 import { usePlayerTurnStore } from '@/stores/playerTurn'
+import BoardItem from '@/components/BoardItem.vue'
 
-type Players = 'O' | 'X'
 type MarkType = 'empty' | Players
 type WinMarkType = 'No one win' | 'X win' | 'O win'
 
@@ -71,15 +81,6 @@ function checkWin() {
   }
 }
 </script>
-
-<template>
-  <h2>{{ players.playersTurn }}'s turn and {{ winMark }}</h2>
-  <ul class="grid-flow">
-    <li v-for="(mark, idx) in blockMarks" :key="idx" class="block" @click="markPlayer(idx)">
-      {{ mark }}
-    </li>
-  </ul>
-</template>
 
 <style scoped>
 .grid-flow {
