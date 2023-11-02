@@ -90,16 +90,10 @@ function checkWin() {
   grid-auto-flow: row;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: 40rem;
-  gap: 2rem;
+  width: 37.75rem;
+  gap: 0.5rem;
   padding: 0;
   margin: 0 auto;
-}
-
-.board-item {
-  display: flex;
-  width: fit-content;
-  /* justify-content: center; */
-  /* align-items: center; */
+  list-style-type: none;
 }
 </style>

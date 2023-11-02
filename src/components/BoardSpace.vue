@@ -36,8 +36,8 @@ function mapColor(map: Record<Players, string>) {
 
 <style scoped>
 .block {
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
