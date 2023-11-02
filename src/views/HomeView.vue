@@ -1,28 +1,41 @@
+<template>
+  <h2>{{ players.playersTurn }}'s turn and {{ winMark }}</h2>
+
+  <ul class="gird-board">
+    <li v-for="(elem, idx) in OuterBoard" :key="idx" class="board-item">
+      <BoardItem />
+    </li>
+  </ul>
+</template>
+
 <script setup lang="ts">
 import { ref } from 'vue'
+import { usePlayerTurnStore } from '@/stores/playerTurn'
+import BoardItem from '@/components/BoardItem.vue'
 
-type Players = 'O' | 'X'
 type MarkType = 'empty' | Players
 type WinMarkType = 'No one win' | 'X win' | 'O win'
 
+const players = usePlayerTurnStore()
+
+const OuterBoard = ref(Array.from({ length: 9 }))
+
 const blockMarks = ref<MarkType[]>(Array.from({ length: 9 }, () => 'empty'))
-const playersTurn = ref<Players>('O')
 const winMark = ref<WinMarkType>('No one win')
 
 function markPlayer(blockIdx: number) {
   if (blockMarks.value[blockIdx] !== 'empty' || winMark.value !== 'No one win') return
 
-  const currentPlayer = playersTurn.value
-  blockMarks.value[blockIdx] = currentPlayer
-  if (currentPlayer === 'O') playersTurn.value = 'X'
-  if (currentPlayer === 'X') playersTurn.value = 'O'
-  checkWin()
+  blockMarks.value[blockIdx] = players.playersTurn
+  players.swapTurn()
+  // checkWin()
 }
 
 const markChecker = {
   O: (mark: MarkType) => mark === 'O',
   X: (mark: MarkType) => mark === 'X'
 }
+
 function checkWin() {
   if (
     Array.from({ length: 3 }, (_, idx) => blockMarks.value[idx + 0]).every(markChecker['O']) ||
@@ -71,36 +84,22 @@ function checkWin() {
 }
 </script>
 
-<template>
-  <h2>{{ playersTurn }}'s turn and {{ winMark }}</h2>
-  <ul class="grid-flow">
-    <li v-for="(mark, idx) in blockMarks" :key="idx" class="block" @click="markPlayer(idx)">
-      {{ mark }}
-    </li>
-  </ul>
-</template>
-
 <style scoped>
-.grid-flow {
+.gird-board {
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: 15rem;
-  height: 15rem;
+  width: 40rem;
+  gap: 2rem;
+  padding: 0;
+  margin: 0 auto;
 }
-.block {
-  width: 5rem;
-  height: 5rem;
+
+.board-item {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f8f8f8;
-}
-.block:hover {
-  background-color: #f0f0f0;
-}
-.block:active {
-  background-color: #e8e8e8;
+  width: fit-content;
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 </style>
