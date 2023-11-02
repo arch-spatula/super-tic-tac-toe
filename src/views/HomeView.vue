@@ -1,11 +1,11 @@
 <template>
   <h2>{{ players.playersTurn }}'s turn and {{ winMark }}</h2>
-  <ul class="grid-flow">
-    <li v-for="(mark, idx) in blockMarks" :key="idx" class="block" @click="markPlayer(idx)">
-      {{ mark }}
+
+  <ul class="gird-board">
+    <li v-for="(elem, idx) in OuterBoard" :key="idx" class="board-item">
+      <BoardItem />
     </li>
   </ul>
-  <BoardItem />
 </template>
 
 <script setup lang="ts">
@@ -18,6 +18,8 @@ type WinMarkType = 'No one win' | 'X win' | 'O win'
 
 const players = usePlayerTurnStore()
 
+const OuterBoard = ref(Array.from({ length: 9 }))
+
 const blockMarks = ref<MarkType[]>(Array.from({ length: 9 }, () => 'empty'))
 const winMark = ref<WinMarkType>('No one win')
 
@@ -26,7 +28,7 @@ function markPlayer(blockIdx: number) {
 
   blockMarks.value[blockIdx] = players.playersTurn
   players.swapTurn()
-  checkWin()
+  // checkWin()
 }
 
 const markChecker = {
@@ -83,26 +85,21 @@ function checkWin() {
 </script>
 
 <style scoped>
-.grid-flow {
+.gird-board {
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: 15rem;
-  height: 15rem;
+  width: 40rem;
+  gap: 2rem;
+  padding: 0;
+  margin: 0 auto;
 }
-.block {
-  width: 5rem;
-  height: 5rem;
+
+.board-item {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f8f8f8;
-}
-.block:hover {
-  background-color: #f0f0f0;
-}
-.block:active {
-  background-color: #e8e8e8;
+  width: fit-content;
+  /* justify-content: center; */
+  /* align-items: center; */
 }
 </style>

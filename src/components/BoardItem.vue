@@ -29,12 +29,13 @@ function markPlayer(blockIdx: number) {
   grid-auto-flow: row;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  width: 15rem;
-  height: 15rem;
+  width: 12rem;
+  height: 12rem;
+  padding: 0;
 }
 .block {
-  width: 5rem;
-  height: 5rem;
+  width: 4rem;
+  height: 4rem;
   display: flex;
   justify-content: center;
   align-items: center;
