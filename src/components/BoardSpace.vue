@@ -1,0 +1,52 @@
+<template>
+  <div class="block">
+    <IconCircle v-if="props.mark === 'O'" color="#3B82F6" />
+    <IconX v-if="props.mark === 'X'" color="#EF4444" />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { usePlayerTurnStore } from '@/stores/playerTurn'
+import { IconX } from '@tabler/icons-vue'
+import { IconCircle } from '@tabler/icons-vue'
+
+type MarkType = 'empty' | Players
+type BoardSpaceProps = {
+  mark: MarkType
+}
+
+const props = withDefaults(defineProps<BoardSpaceProps>(), { mark: 'empty' })
+
+const player = usePlayerTurnStore()
+
+const color100Map: Record<Players, string> = {
+  O: '#DBEAFE',
+  X: '#FEE2E2'
+}
+
+const color200Map: Record<Players, string> = {
+  O: '#BFDBFE',
+  X: '#FECACA'
+}
+
+function mapColor(map: Record<Players, string>) {
+  return props.mark === 'empty' ? map[player.playersTurn] : '#f8f8f8'
+}
+</script>
+
+<style scoped>
+.block {
+  width: 4rem;
+  height: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8;
+}
+.block:hover {
+  background-color: v-bind('mapColor(color100Map)');
+}
+.block:active {
+  background-color: v-bind('mapColor(color200Map)');
+}
+</style>
