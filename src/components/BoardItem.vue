@@ -5,21 +5,28 @@
     </li>
   </ul>
 </template>
+
 <script setup lang="ts">
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import { ref } from 'vue'
 import BoardSpace from './BoardSpace.vue'
+import { BOARD_SIZE } from '@/constant/constant'
+import { useSpaceFlag } from '@/stores/spaceFlag'
 
 type MarkType = 'empty' | Players
 
 const players = usePlayerTurnStore()
+const spaceFlag = useSpaceFlag()
 
-const blockMarks = ref<MarkType[]>(Array.from({ length: 9 }, () => 'empty'))
+const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'empty'))
 
 function markPlayer(blockIdx: number) {
   // if (blockMarks.value[blockIdx] !== 'empty' || winMark.value !== 'No one win') return
   blockMarks.value[blockIdx] = players.playersTurn
   players.swapTurn()
+
+  spaceFlag.setFlag(blockIdx)
+
   // checkWin()
 }
 </script>
@@ -36,3 +43,4 @@ function markPlayer(blockIdx: number) {
   list-style-type: none;
 }
 </style>
+@/constant ../constant/constant

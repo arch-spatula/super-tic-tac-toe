@@ -12,13 +12,14 @@
 import { ref } from 'vue'
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import BoardItem from '@/components/BoardItem.vue'
+import { BOARD_SIZE } from '@/constant/constant'
 
 type MarkType = 'empty' | Players
 type WinMarkType = 'No one win' | 'X win' | 'O win'
 
 const players = usePlayerTurnStore()
 
-const OuterBoard = ref(Array.from({ length: 9 }))
+const OuterBoard = ref(Array.from({ length: BOARD_SIZE }))
 
 const blockMarks = ref<MarkType[]>(Array.from({ length: 9 }, () => 'empty'))
 const winMark = ref<WinMarkType>('No one win')
