@@ -1,6 +1,14 @@
 # super-tic-tac-toe
 
-super-tic-tac-toe 보드게임 만들기
+super-tic-tac-toe 보드게임입니다.
+
+위키피디아는 [Ultimate tic-tac-toe](https://en.wikipedia.org/wiki/Ultimate_tic-tac-toe)라고 부릅니다.
+
+글로 설명해주면 저처럼 집중 못하고 문해력 부족한 사람들을 위해 아래 링크를 남기겠습니다.
+
+[How To Play Super Tic-Tac-Toe - Vsauce](https://www.youtube.com/shorts/_Na3a1ZrX7c)
+
+<!--
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -68,3 +76,4 @@ pnpm test:e2e
 ```sh
 pnpm lint
 ```
+-->
