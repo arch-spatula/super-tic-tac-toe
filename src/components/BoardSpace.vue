@@ -1,8 +1,8 @@
 <template>
-  <div class="block">
-    <IconCircle v-if="props.mark === 'O'" color="#3B82F6" />
-    <IconX v-if="props.mark === 'X'" color="#EF4444" />
-  </div>
+  <button class="block">
+    <IconCircle v-if="props?.mark === 'O'" color="#3B82F6" />
+    <IconX v-if="props?.mark === 'X'" color="#EF4444" />
+  </button>
 </template>
 
 <script setup lang="ts">
