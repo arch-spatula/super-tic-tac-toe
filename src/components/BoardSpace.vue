@@ -42,6 +42,7 @@ function mapColor(map: Record<Players, string>) {
   justify-content: center;
   align-items: center;
   background-color: #f8f8f8;
+  border-radius: 0.5rem;
 }
 .block:hover {
   background-color: v-bind('mapColor(color100Map)');

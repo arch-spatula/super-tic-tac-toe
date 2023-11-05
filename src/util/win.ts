@@ -1,10 +1,10 @@
 import { UNIT_SIZE } from '@/constant/constant'
 import type { Ref } from 'vue'
 
-export function checkWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>) {
-  checkColumWin(playersTurn, blockMarksRef)
-  checkRowWin(playersTurn, blockMarksRef)
-  checkDiagonalWin(playersTurn, blockMarksRef)
+export function checkWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
+  checkColumWin(playersTurn, blockMarksRef, winCB)
+  checkRowWin(playersTurn, blockMarksRef, winCB)
+  checkDiagonalWin(playersTurn, blockMarksRef, winCB)
 }
 
 const markChecker = {
@@ -12,7 +12,7 @@ const markChecker = {
   X: (mark: MarkType) => mark === 'X'
 }
 
-function checkColumWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>) {
+function checkColumWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
   if (
     Array.from({ length: UNIT_SIZE }, (_, outerIdx) =>
       Array.from(
@@ -21,11 +21,11 @@ function checkColumWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>) {
       ).every(markChecker[playersTurn])
     ).some((col) => col)
   ) {
-    console.log(`${playersTurn} win`)
+    winCB()
   }
 }
 
-function checkRowWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>) {
+function checkRowWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
   if (
     Array.from({ length: UNIT_SIZE }, (_, outerIdx) =>
       Array.from(
@@ -34,17 +34,17 @@ function checkRowWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>) {
       ).every(markChecker[playersTurn])
     ).some((row) => row)
   ) {
-    console.log(`${playersTurn} win`)
+    winCB()
   }
 }
 
-function checkDiagonalWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>) {
+function checkDiagonalWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
   if (
     [blockMarksRef.value[0], blockMarksRef.value[4], blockMarksRef.value[8]].every(
       markChecker[playersTurn]
     )
   ) {
-    console.log(`${playersTurn} win`)
+    winCB()
   }
 
   if (
@@ -52,6 +52,6 @@ function checkDiagonalWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>) 
       markChecker[playersTurn]
     )
   ) {
-    console.log(`${playersTurn} win`)
+    winCB()
   }
 }
