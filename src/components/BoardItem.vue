@@ -11,8 +11,10 @@
     </li>
   </ul>
   <div v-if="localResult === 'O' || localResult === 'X'" class="done-board">
-    <IconCircle v-if="localResult === 'O'" color="#3B82F6" width="100%" height="100%" />
-    <IconX v-if="localResult === 'X'" color="#EF4444" width="100%" height="100%" />
+    <div class="foo">
+      <IconCircle v-if="localResult === 'O'" color="#3B82F6" width="100%" height="100%" />
+      <IconX v-if="localResult === 'X'" color="#EF4444" width="100%" height="100%" />
+    </div>
   </div>
 </template>
 
@@ -64,13 +66,25 @@ function mapColor(map: Record<Players | 'draw' | 'playing', string>) {
   padding: 0;
   list-style-type: none;
 }
-.done-board {
-  width: 12rem;
-  height: 12rem;
-  background-color: #f8f8f8;
+
+.block {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.done-board {
+  width: 12rem;
+  height: 12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: v-bind('mapColor(color100Map)'); */
+  border-radius: 1rem;
+}
+.foo {
+  width: 11.5rem;
+  height: 11.5rem;
   background-color: v-bind('mapColor(color100Map)');
   border-radius: 1rem;
 }
