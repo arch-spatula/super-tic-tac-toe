@@ -1,6 +1,14 @@
 <template>
-  <ul class="grid-flow">
-    <li v-for="(mark, idx) in blockMarks" :key="idx" class="block" @click="markPlayer(idx)">
+  <IconCircle v-if="localResult === 'O'" color="#3B82F6" />
+  <IconX v-if="localResult === 'X'" color="#EF4444" />
+  <ul v-if="localResult !== 'O' && localResult !== 'X'" class="grid-flow">
+    <li
+      v-for="(mark, idx) in blockMarks"
+      :key="idx"
+      class="block"
+      @click="markPlayer(idx)"
+      :data-test="`space-${idx}`"
+    >
       <BoardSpace :mark="mark" />
     </li>
   </ul>
@@ -12,22 +20,21 @@ import { ref } from 'vue'
 import BoardSpace from './BoardSpace.vue'
 import { BOARD_SIZE } from '@/constant/constant'
 import { useSpaceFlag } from '@/stores/spaceFlag'
-
-type MarkType = 'empty' | Players
+import { IconCircle, IconX } from '@tabler/icons-vue'
+import { checkWin } from '@/util/win'
 
 const players = usePlayerTurnStore()
 const spaceFlag = useSpaceFlag()
 
 const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'empty'))
+const localResult = ref<Players | 'draw' | 'playing'>('playing')
 
 function markPlayer(blockIdx: number) {
-  // if (blockMarks.value[blockIdx] !== 'empty' || winMark.value !== 'No one win') return
   blockMarks.value[blockIdx] = players.playersTurn
+  checkWin(players.playersTurn, blockMarks)
+
   players.swapTurn()
-
   spaceFlag.setFlag(blockIdx)
-
-  // checkWin()
 }
 </script>
 
@@ -43,4 +50,3 @@ function markPlayer(blockIdx: number) {
   list-style-type: none;
 }
 </style>
-@/constant ../constant/constant

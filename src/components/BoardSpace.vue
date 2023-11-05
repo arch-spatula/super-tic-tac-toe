@@ -7,8 +7,7 @@
 
 <script setup lang="ts">
 import { usePlayerTurnStore } from '@/stores/playerTurn'
-import { IconX } from '@tabler/icons-vue'
-import { IconCircle } from '@tabler/icons-vue'
+import { IconX, IconCircle } from '@tabler/icons-vue'
 
 type MarkType = 'empty' | Players
 type BoardSpaceProps = {
