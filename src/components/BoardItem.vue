@@ -34,6 +34,8 @@ const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'emp
 const localResult = ref<Players | 'draw' | 'playing'>('playing')
 
 function markPlayer(blockIdx: number) {
+  if (blockMarks.value[blockIdx] !== 'empty') return
+
   blockMarks.value[blockIdx] = players.playersTurn
   checkWin(players.playersTurn, blockMarks, () => {
     localResult.value = players.playersTurn
