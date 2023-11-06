@@ -11,7 +11,7 @@
     </li>
   </ul>
   <div v-if="localResult === 'O' || localResult === 'X'" class="done-board">
-    <div class="foo">
+    <div class="result-container">
       <IconCircle v-if="localResult === 'O'" color="#3B82F6" width="100%" height="100%" />
       <IconX v-if="localResult === 'X'" color="#EF4444" width="100%" height="100%" />
     </div>
@@ -27,6 +27,19 @@ import { useSpaceFlag } from '@/stores/spaceFlag'
 import { IconCircle, IconX } from '@tabler/icons-vue'
 import { checkWin } from '@/util/win'
 
+const props = defineProps({
+  modelValue: Array,
+  idx: Number,
+  boardWin: {
+    type: Function,
+    default() {
+      return null
+    }
+  }
+})
+
+const emit = defineEmits(['update:modelValue'])
+
 const players = usePlayerTurnStore()
 const spaceFlag = useSpaceFlag()
 
@@ -34,11 +47,21 @@ const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'emp
 const localResult = ref<Players | 'draw' | 'playing'>('playing')
 
 function markPlayer(blockIdx: number) {
+  // console.log('BoardItem')
   if (blockMarks.value[blockIdx] !== 'empty') return
 
   blockMarks.value[blockIdx] = players.playersTurn
   checkWin(players.playersTurn, blockMarks, () => {
     localResult.value = players.playersTurn
+
+    emit(
+      'update:modelValue',
+      props.modelValue?.map((elem, idx) => {
+        if (idx === props.idx) return players.playersTurn
+        else return elem
+      })
+    )
+    props.boardWin()
   })
 
   players.swapTurn()
@@ -84,7 +107,7 @@ function mapColor(map: Record<Players | 'draw' | 'playing', string>) {
   /* background-color: v-bind('mapColor(color100Map)'); */
   border-radius: 1rem;
 }
-.foo {
+.result-container {
   width: 11.5rem;
   height: 11.5rem;
   background-color: v-bind('mapColor(color100Map)');

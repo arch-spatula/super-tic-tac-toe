@@ -2,8 +2,8 @@
   <h2>{{ players.playersTurn }}'s turn and {{ winMark }}</h2>
 
   <ul class="gird-board">
-    <li v-for="(elem, idx) in OuterBoard" :key="idx" class="board-item">
-      <BoardItem />
+    <li v-for="(elem, idx) in blockMarks" :key="idx" class="board-item">
+      <BoardItem v-model="blockMarks" :idx="idx" :board-win="checkBoardWin" />
     </li>
   </ul>
 </template>
@@ -13,75 +13,27 @@ import { ref } from 'vue'
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import BoardItem from '@/components/BoardItem.vue'
 import { BOARD_SIZE } from '@/constant/constant'
+import { checkWin } from '@/util/win'
 
 type MarkType = 'empty' | Players
 type WinMarkType = 'No one win' | 'X win' | 'O win'
 
 const players = usePlayerTurnStore()
-
-const OuterBoard = ref(Array.from({ length: BOARD_SIZE }))
-
-const blockMarks = ref<MarkType[]>(Array.from({ length: 9 }, () => 'empty'))
+const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'empty'))
 const winMark = ref<WinMarkType>('No one win')
 
-function markPlayer(blockIdx: number) {
-  if (blockMarks.value[blockIdx] !== 'empty' || winMark.value !== 'No one win') return
-
-  blockMarks.value[blockIdx] = players.playersTurn
-  players.swapTurn()
-  // checkWin()
-}
-
-const markChecker = {
-  O: (mark: MarkType) => mark === 'O',
-  X: (mark: MarkType) => mark === 'X'
-}
-
-function checkWin() {
-  if (
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[idx + 0]).every(markChecker['O']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[idx + 3]).every(markChecker['O']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[idx + 6]).every(markChecker['O'])
-  ) {
-    winMark.value = 'O win'
+function checkBoardWin() {
+  const winMap: Record<Players, () => void> = {
+    O: () => {
+      winMark.value = 'O win'
+    },
+    X: () => {
+      winMark.value = 'X win'
+    }
   }
-
-  if (
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[idx + 0]).every(markChecker['X']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[idx + 3]).every(markChecker['X']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[idx + 6]).every(markChecker['X'])
-  ) {
-    winMark.value = 'X win'
-  }
-
-  if (
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[0 + idx * 3]).every(markChecker['O']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[1 + idx * 3]).every(markChecker['O']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[2 + idx * 3]).every(markChecker['O'])
-  ) {
-    winMark.value = 'O win'
-  }
-
-  if (
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[0 + idx * 3]).every(markChecker['X']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[1 + idx * 3]).every(markChecker['X']) ||
-    Array.from({ length: 3 }, (_, idx) => blockMarks.value[2 + idx * 3]).every(markChecker['X'])
-  ) {
-    winMark.value = 'X win'
-  }
-
-  if ([blockMarks.value[0], blockMarks.value[4], blockMarks.value[8]].every(markChecker['O'])) {
-    winMark.value = 'O win'
-  }
-  if ([blockMarks.value[0], blockMarks.value[4], blockMarks.value[8]].every(markChecker['X'])) {
-    winMark.value = 'X win'
-  }
-  if ([blockMarks.value[2], blockMarks.value[4], blockMarks.value[6]].every(markChecker['O'])) {
-    winMark.value = 'O win'
-  }
-  if ([blockMarks.value[2], blockMarks.value[4], blockMarks.value[6]].every(markChecker['X'])) {
-    winMark.value = 'X win'
-  }
+  checkWin(players.playersTurn, blockMarks, () => {
+    winMap[players.playersTurn]()
+  })
 }
 </script>
 
