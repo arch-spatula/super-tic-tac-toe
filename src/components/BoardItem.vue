@@ -25,7 +25,8 @@ import BoardSpace from './BoardSpace.vue'
 import { BOARD_SIZE } from '@/constant/constant'
 import { useSpaceFlag } from '@/stores/spaceFlag'
 import { IconCircle, IconX } from '@tabler/icons-vue'
-import { checkWin } from '@/util/win'
+import { checkWin } from '@/util/checkWin'
+import { useGlobalWin } from '@/stores/win'
 
 const props = defineProps({
   modelValue: Array,
@@ -40,6 +41,7 @@ const props = defineProps({
 
 const emit = defineEmits(['update:modelValue'])
 
+const globalWin = useGlobalWin()
 const players = usePlayerTurnStore()
 const spaceFlag = useSpaceFlag()
 
@@ -47,7 +49,7 @@ const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'emp
 const localResult = ref<Players | 'draw' | 'playing'>('playing')
 
 function markPlayer(blockIdx: number) {
-  if (blockMarks.value[blockIdx] !== 'empty') return
+  if (blockMarks.value[blockIdx] !== 'empty' || globalWin.isDetermined) return
 
   blockMarks.value[blockIdx] = players.playersTurn
   checkWin(players.playersTurn, blockMarks, () => {
@@ -113,3 +115,4 @@ function mapColor(map: Record<Players | 'draw' | 'playing', string>) {
   border-radius: 1rem;
 }
 </style>
+@/util/checkWin

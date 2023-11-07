@@ -1,5 +1,5 @@
 <template>
-  <h2>{{ players.playersTurn }}'s turn and {{ winMark }}</h2>
+  <h2>{{ players.playersTurn }}'s turn and {{ globalWin.win }}</h2>
 
   <ul class="gird-board">
     <li v-for="(elem, idx) in blockMarks" :key="idx" class="board-item">
@@ -13,26 +13,18 @@ import { ref } from 'vue'
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import BoardItem from '@/components/BoardItem.vue'
 import { BOARD_SIZE } from '@/constant/constant'
-import { checkWin } from '@/util/win'
-
-type MarkType = 'empty' | Players
-type WinMarkType = 'No one win' | 'X win' | 'O win'
+import { checkWin } from '@/util/checkWin'
+import { useGlobalWin } from '@/stores/win'
 
 const players = usePlayerTurnStore()
+const globalWin = useGlobalWin()
 const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'empty'))
-const winMark = ref<WinMarkType>('No one win')
 
 function checkBoardWin() {
-  const winMap: Record<Players, () => void> = {
-    O: () => {
-      winMark.value = 'O win'
-    },
-    X: () => {
-      winMark.value = 'X win'
-    }
-  }
+  if (globalWin.isDetermined) return
+
   checkWin(players.playersTurn, blockMarks, () => {
-    winMap[players.playersTurn]()
+    globalWin.setWin()
   })
 }
 </script>
@@ -50,3 +42,4 @@ function checkBoardWin() {
   list-style-type: none;
 }
 </style>
+@/util/checkWin

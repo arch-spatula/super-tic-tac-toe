@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { checkWin } from './win'
+import { checkWin } from './checkWin'
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import { ref } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
