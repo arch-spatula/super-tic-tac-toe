@@ -42,4 +42,3 @@ function checkBoardWin() {
   list-style-type: none;
 }
 </style>
-@/util/checkWin

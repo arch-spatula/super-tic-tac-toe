@@ -30,6 +30,7 @@ const color200Map: Record<Players, string> = {
 
 function mapColor(map: Record<Players, string>) {
   return props.mark === 'empty' ? map[player.playersTurn] : '#f8f8f8'
+  // background-color: #6B7280;
 }
 </script>
 
@@ -44,9 +45,11 @@ function mapColor(map: Record<Players, string>) {
   background-color: #f8f8f8;
   border-radius: 0.5rem;
 }
+
 .block:hover {
   background-color: v-bind('mapColor(color100Map)');
 }
+
 .block:active {
   background-color: v-bind('mapColor(color200Map)');
 }
