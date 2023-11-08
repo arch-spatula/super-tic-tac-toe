@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { checkWin } from './checkWin'
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import { ref } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
+import { checkWin } from './checkWin'
 
 describe('checkWin', () => {
   beforeEach(() => {
@@ -11,16 +11,16 @@ describe('checkWin', () => {
 
   it('가로 승리인지 확인합니다.', () => {
     const players = usePlayerTurnStore()
-    const blockMarks = ref<MarkType[]>([
-      'empty',
-      'empty',
-      'empty',
+    const blockMarks = ref<LocalResultType[]>([
+      'playing',
+      'playing',
+      'playing',
       'O',
       'O',
       'O',
-      'empty',
-      'empty',
-      'empty'
+      'playing',
+      'playing',
+      'playing'
     ])
     const mock = vi.fn(() => 0)
 
@@ -31,16 +31,16 @@ describe('checkWin', () => {
 
   it('세로 승리인지 확인합니다.', () => {
     const players = usePlayerTurnStore()
-    const blockMarks = ref<MarkType[]>([
+    const blockMarks = ref<LocalResultType[]>([
       'O',
-      'empty',
-      'empty',
+      'playing',
+      'playing',
       'O',
-      'empty',
-      'empty',
+      'playing',
+      'playing',
       'O',
-      'empty',
-      'empty'
+      'playing',
+      'playing'
     ])
     const mock = vi.fn(() => 0)
 
@@ -51,15 +51,15 @@ describe('checkWin', () => {
 
   it('대각선 승리인지 확인합니다.', () => {
     const players = usePlayerTurnStore()
-    const blockMarks = ref<MarkType[]>([
+    const blockMarks = ref<LocalResultType[]>([
       'O',
-      'empty',
-      'empty',
-      'empty',
+      'playing',
+      'playing',
+      'playing',
       'O',
-      'empty',
-      'empty',
-      'empty',
+      'playing',
+      'playing',
+      'playing',
       'O'
     ])
     const mock = vi.fn(() => 0)
