@@ -7,7 +7,7 @@
         v-model="blockMarks"
         :idx="idx"
         :board-win="checkBoardWin"
-        :disabled="idx !== spaceFlag.current"
+        :disabled="idx !== spaceFlag.current && spaceFlag.current !== null"
       />
     </li>
   </ul>
