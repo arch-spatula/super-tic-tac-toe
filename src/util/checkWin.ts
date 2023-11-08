@@ -1,18 +1,26 @@
 import { UNIT_SIZE } from '@/constant/constant'
 import type { Ref } from 'vue'
 
-export function checkWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
+export function checkWin(
+  playersTurn: Players,
+  blockMarksRef: Ref<LocalResultType[]>,
+  winCB: () => void
+) {
   checkColumWin(playersTurn, blockMarksRef, winCB)
   checkRowWin(playersTurn, blockMarksRef, winCB)
   checkDiagonalWin(playersTurn, blockMarksRef, winCB)
 }
 
 const markChecker = {
-  O: (mark: MarkType) => mark === 'O',
-  X: (mark: MarkType) => mark === 'X'
+  O: (mark: LocalResultType) => mark === 'O',
+  X: (mark: LocalResultType) => mark === 'X'
 }
 
-function checkColumWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
+function checkColumWin(
+  playersTurn: Players,
+  blockMarksRef: Ref<LocalResultType[]>,
+  winCB: () => void
+) {
   if (
     Array.from({ length: UNIT_SIZE }, (_, outerIdx) =>
       Array.from(
@@ -25,7 +33,11 @@ function checkColumWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, win
   }
 }
 
-function checkRowWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
+function checkRowWin(
+  playersTurn: Players,
+  blockMarksRef: Ref<LocalResultType[]>,
+  winCB: () => void
+) {
   if (
     Array.from({ length: UNIT_SIZE }, (_, outerIdx) =>
       Array.from(
@@ -38,7 +50,11 @@ function checkRowWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB
   }
 }
 
-function checkDiagonalWin(playersTurn: Players, blockMarksRef: Ref<MarkType[]>, winCB: () => void) {
+function checkDiagonalWin(
+  playersTurn: Players,
+  blockMarksRef: Ref<LocalResultType[]>,
+  winCB: () => void
+) {
   if (
     [blockMarksRef.value[0], blockMarksRef.value[4], blockMarksRef.value[8]].every(
       markChecker[playersTurn]
