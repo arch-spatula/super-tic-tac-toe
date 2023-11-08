@@ -3,7 +3,12 @@
 
   <ul class="gird-board">
     <li v-for="(elem, idx) in blockMarks" :key="idx" class="board-item">
-      <BoardItem v-model="blockMarks" :idx="idx" :board-win="checkBoardWin" />
+      <BoardItem
+        v-model="blockMarks"
+        :idx="idx"
+        :board-win="checkBoardWin"
+        :disabled="idx !== spaceFlag.current"
+      />
     </li>
   </ul>
 </template>
@@ -15,10 +20,12 @@ import BoardItem from '@/components/BoardItem.vue'
 import { BOARD_SIZE } from '@/constant/constant'
 import { checkWin } from '@/util/checkWin'
 import { useGlobalWin } from '@/stores/win'
+import { useSpaceFlag } from '@/stores/spaceFlag'
 
 const players = usePlayerTurnStore()
 const globalWin = useGlobalWin()
 const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'empty'))
+const spaceFlag = useSpaceFlag()
 
 function checkBoardWin() {
   if (globalWin.isDetermined) return

@@ -12,9 +12,10 @@ import { IconX, IconCircle } from '@tabler/icons-vue'
 type MarkType = 'empty' | Players
 type BoardSpaceProps = {
   mark: MarkType
+  disabled: boolean
 }
 
-const props = withDefaults(defineProps<BoardSpaceProps>(), { mark: 'empty' })
+const props = withDefaults(defineProps<BoardSpaceProps>(), { mark: 'empty', disabled: false })
 
 const player = usePlayerTurnStore()
 
@@ -29,8 +30,8 @@ const color200Map: Record<Players, string> = {
 }
 
 function mapColor(map: Record<Players, string>) {
-  return props.mark === 'empty' ? map[player.playersTurn] : '#f8f8f8'
-  // background-color: #6B7280;
+  if (props.mark === 'empty') return map[player.playersTurn]
+  else return '#f8f8f8'
 }
 </script>
 
@@ -42,15 +43,15 @@ function mapColor(map: Record<Players, string>) {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8f8f8;
+  background-color: v-bind('$props.disabled ? "#F3F4F6" : "#f8f8f8" ');
   border-radius: 0.5rem;
 }
 
 .block:hover {
-  background-color: v-bind('mapColor(color100Map)');
+  background-color: v-bind('$props.disabled ? "#F3F4F6" : mapColor(color100Map)');
 }
 
 .block:active {
-  background-color: v-bind('mapColor(color200Map)');
+  background-color: v-bind('$props.disabled ? "#F3F4F6" :mapColor(color200Map)');
 }
 </style>

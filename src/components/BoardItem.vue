@@ -7,7 +7,7 @@
       @click="markPlayer(idx)"
       :data-test="`space-${idx}`"
     >
-      <BoardSpace :mark="mark" />
+      <BoardSpace :mark="mark" :disabled="props.disabled" />
     </li>
   </ul>
   <div v-if="localResult === 'O' || localResult === 'X'" class="done-board">
@@ -36,7 +36,8 @@ const props = defineProps({
     default() {
       return null
     }
-  }
+  },
+  disabled: Boolean
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -67,7 +68,11 @@ function markPlayer(blockIdx: number) {
   })
 
   players.swapTurn()
-  spaceFlag.setFlag(blockIdx)
+  if (props.modelValue && props.modelValue[blockIdx] !== 'empty') {
+    spaceFlag.setFlag(null)
+  } else {
+    spaceFlag.setFlag(blockIdx)
+  }
 }
 
 const color100Map: Record<Players | 'draw' | 'playing', string> = {
