@@ -37,6 +37,34 @@ function checkBoardWin() {
   checkWin(players.playersTurn, blockMarks, () => {
     globalWin.setWin()
   })
+
+  determinedResult()
+  checkFiveWin()
+}
+
+function checkFiveWin() {
+  if (blockMarks.value.filter((board) => board === 'O').length >= 5) globalWin.setWin()
+  if (blockMarks.value.filter((board) => board === 'X').length >= 5) globalWin.setWin()
+}
+
+function determinedResult() {
+  if (blockMarks.value.includes('playing')) return
+  globalWin.isDetermined
+  if (
+    blockMarks.value.filter((board) => board === 'O').length >
+    blockMarks.value.filter((board) => board === 'X').length
+  ) {
+    if (players.playersTurn !== 'O') players.swapTurn()
+    globalWin.setWin()
+  }
+  if (
+    blockMarks.value.filter((board) => board === 'O').length <
+    blockMarks.value.filter((board) => board === 'X').length
+  ) {
+    if (players.playersTurn !== 'X') players.swapTurn()
+    globalWin.setWin()
+  }
+  globalWin.setDraw()
 }
 </script>
 
