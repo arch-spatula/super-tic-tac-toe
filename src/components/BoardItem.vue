@@ -46,12 +46,12 @@ const globalWin = useGlobalWin()
 const players = usePlayerTurnStore()
 const spaceFlag = useSpaceFlag()
 
-const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'empty'))
-const localResult = ref<Players | 'draw' | 'playing'>('playing')
+const blockMarks = ref<LocalResultType[]>(Array.from({ length: BOARD_SIZE }, () => 'playing'))
+const localResult = ref<LocalResultType>('playing')
 
 function markPlayer(blockIdx: number) {
   if (spaceFlag.current !== null && spaceFlag.current !== props.idx) return
-  if (blockMarks.value[blockIdx] !== 'empty' || globalWin.isDetermined) return
+  if (blockMarks.value[blockIdx] !== 'playing' || globalWin.isDetermined) return
 
   blockMarks.value[blockIdx] = players.playersTurn
   checkWin(players.playersTurn, blockMarks, () => {
@@ -67,22 +67,39 @@ function markPlayer(blockIdx: number) {
     props.boardWin()
   })
 
+  checkDraw()
   players.swapTurn()
-  if (props.modelValue && props.modelValue[blockIdx] !== 'empty') {
+  if (
+    props.modelValue &&
+    (props.modelValue[blockIdx] !== 'playing' || props.modelValue[blockIdx] === 'draw')
+  ) {
     spaceFlag.setFlag(null)
   } else {
     spaceFlag.setFlag(blockIdx)
   }
 }
 
-const color100Map: Record<Players | 'draw' | 'playing', string> = {
+function checkDraw() {
+  if (!blockMarks.value.includes('playing')) {
+    localResult.value = 'draw'
+    emit(
+      'update:modelValue',
+      props.modelValue?.map((elem, idx) => {
+        if (idx === props.idx) return 'draw'
+        else return elem
+      })
+    )
+  }
+}
+
+const color100Map: Record<LocalResultType, string> = {
   O: '#DBEAFE',
   X: '#FEE2E2',
   draw: '#f8f8f8',
   playing: '#f8f8f8'
 }
 
-function mapColor(map: Record<Players | 'draw' | 'playing', string>) {
+function mapColor(map: Record<LocalResultType, string>) {
   return map[localResult.value]
 }
 </script>
@@ -121,4 +138,3 @@ function mapColor(map: Record<Players | 'draw' | 'playing', string>) {
   border-radius: 1rem;
 }
 </style>
-@/util/checkWin

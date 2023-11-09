@@ -11,7 +11,7 @@ describe('BoardSpace', () => {
   // 스타일에 대한 지역 상태 이외 상태 의존을 최소화함
 
   it('초기 값은 비어있어야 합니다.', () => {
-    const wrapper = mount(BoardSpace, { props: { mark: 'empty' } })
+    const wrapper = mount(BoardSpace, { props: { mark: 'playing' } })
 
     expect(wrapper.find('.tabler-icon-circle').exists()).toBe(false)
     expect(wrapper.find('.tabler-icon-x').exists()).toBe(false)

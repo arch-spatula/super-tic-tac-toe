@@ -9,13 +9,12 @@
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import { IconX, IconCircle } from '@tabler/icons-vue'
 
-type MarkType = 'empty' | Players
 type BoardSpaceProps = {
-  mark: MarkType
+  mark: LocalResultType
   disabled: boolean
 }
 
-const props = withDefaults(defineProps<BoardSpaceProps>(), { mark: 'empty', disabled: false })
+const props = withDefaults(defineProps<BoardSpaceProps>(), { mark: 'playing', disabled: false })
 
 const player = usePlayerTurnStore()
 
@@ -30,7 +29,7 @@ const color200Map: Record<Players, string> = {
 }
 
 function mapColor(map: Record<Players, string>) {
-  if (props.mark === 'empty') return map[player.playersTurn]
+  if (props.mark === 'playing') return map[player.playersTurn]
   else return '#f8f8f8'
 }
 </script>

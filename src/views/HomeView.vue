@@ -24,7 +24,7 @@ import { useSpaceFlag } from '@/stores/spaceFlag'
 
 const players = usePlayerTurnStore()
 const globalWin = useGlobalWin()
-const blockMarks = ref<MarkType[]>(Array.from({ length: BOARD_SIZE }, () => 'empty'))
+const blockMarks = ref<LocalResultType[]>(Array.from({ length: BOARD_SIZE }, () => 'playing'))
 const spaceFlag = useSpaceFlag()
 
 function checkBoardWin() {
