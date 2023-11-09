@@ -11,16 +11,20 @@
       />
     </li>
   </ul>
+  <Teleport v-if="globalWin.isDetermined" to="body">
+    <WinPopup />
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Teleport, ref } from 'vue'
 import { usePlayerTurnStore } from '@/stores/playerTurn'
 import BoardItem from '@/components/BoardItem.vue'
 import { BOARD_SIZE } from '@/constant/constant'
 import { checkWin } from '@/util/checkWin'
 import { useGlobalWin } from '@/stores/win'
 import { useSpaceFlag } from '@/stores/spaceFlag'
+import WinPopup from '@/components/WinPopup.vue'
 
 const players = usePlayerTurnStore()
 const globalWin = useGlobalWin()
