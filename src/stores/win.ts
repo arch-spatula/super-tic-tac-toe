@@ -2,12 +2,12 @@ import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { usePlayerTurnStore } from './playerTurn'
 
-type WinMarkType = 'No one win' | 'X win' | 'O win'
+type WinMarkType = 'No one win' | 'X win' | 'O win' | 'Not determined'
 
 export const useGlobalWin = defineStore('win', () => {
   const players = usePlayerTurnStore()
 
-  const winMark = ref<WinMarkType>('No one win')
+  const winMark = ref<WinMarkType>('Not determined')
 
   const winMap: Record<Players, () => void> = {
     O: () => {
@@ -19,7 +19,7 @@ export const useGlobalWin = defineStore('win', () => {
   }
 
   /** 승부 결정 */
-  const isDetermined = computed(() => winMark.value !== 'No one win')
+  const isDetermined = computed(() => winMark.value !== 'Not determined')
 
   const win = computed(() => winMark.value)
 
@@ -29,5 +29,9 @@ export const useGlobalWin = defineStore('win', () => {
     winMap[players.playersTurn]()
   }
 
-  return { win, isDetermined, setWin }
+  function setDraw() {
+    winMark.value = 'No one win'
+  }
+
+  return { win, isDetermined, setWin, setDraw }
 })

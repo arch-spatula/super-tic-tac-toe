@@ -48,6 +48,7 @@ const spaceFlag = useSpaceFlag()
 
 const blockMarks = ref<LocalResultType[]>(Array.from({ length: BOARD_SIZE }, () => 'playing'))
 const localResult = ref<LocalResultType>('playing')
+const pass = ref<boolean>(true)
 
 function markPlayer(blockIdx: number) {
   if (spaceFlag.current !== null && spaceFlag.current !== props.idx) return
@@ -60,6 +61,20 @@ function markPlayer(blockIdx: number) {
     emit(
       'update:modelValue',
       props.modelValue?.map((elem, idx) => {
+        // console.log(
+        //   idx === props.idx,
+        //   'idx',
+        //   idx,
+        //   'props.idx',
+        //   props.idx,
+        //   'blockIdx',
+        //   blockIdx,
+        //   players.playersTurn
+        // )
+        if (blockIdx === props.idx) {
+          spaceFlag.setFlag(null)
+          pass.value = false
+        }
         if (idx === props.idx) return players.playersTurn
         else return elem
       })
@@ -68,15 +83,17 @@ function markPlayer(blockIdx: number) {
   })
 
   checkDraw()
-  players.swapTurn()
-  if (
-    props.modelValue &&
-    (props.modelValue[blockIdx] !== 'playing' || props.modelValue[blockIdx] === 'draw')
-  ) {
-    spaceFlag.setFlag(null)
-  } else {
-    spaceFlag.setFlag(blockIdx)
+
+  if (pass.value) {
+    if (props.modelValue && props.modelValue[blockIdx] !== 'playing') {
+      spaceFlag.setFlag(null)
+    } else {
+      spaceFlag.setFlag(blockIdx)
+    }
   }
+  pass.value = true
+
+  players.swapTurn()
 }
 
 function checkDraw() {
