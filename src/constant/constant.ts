@@ -1,0 +1,4 @@
+const UNIT_SIZE = 3
+const BOARD_SIZE = UNIT_SIZE * UNIT_SIZE
+
+export { BOARD_SIZE, UNIT_SIZE }
